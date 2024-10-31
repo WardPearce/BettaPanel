@@ -1,4 +1,4 @@
-<a class="row padding surface-container round">
+<a href="/me/server/123" class="row padding surface-container round">
 	<img class="round small-padding" src="http://localhost:8080/img/icons/minecraft-java.png" />
 	<div class="max">
 		<h6 class="small">Minecraft</h6>
