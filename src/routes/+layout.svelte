@@ -47,7 +47,7 @@
 		{#if emailHash}
 			<img
 				style="position: absolute; top: -1; right: 0;"
-				class="circle large"
+				class="circle"
 				src={`https://gravatar.com/avatar/${emailHash}?d=mp`}
 				alt="Profile from gravatar"
 			/>
