@@ -1,12 +1,34 @@
 <script lang="ts">
-	import type { GetServer } from '$lib/api';
+	import type { GetServer, ServerRunning } from '$lib/api';
+	import { puffer } from '$lib/const';
 
-	let { children, data }: { children: any; data: { server: GetServer } } = $props();
+	let { children, data }: { children: any; data: { server: GetServer; status: ServerRunning } } =
+		$props();
+
+	let serverStatus = $state(data.status.running);
+
+	async function togglePowerAction() {
+		if (serverStatus) {
+			await puffer.default.postApiServersStop(data.server.server?.id as string);
+			serverStatus = false;
+		} else {
+			await puffer.default.postApiServersStart(data.server.server?.id as string);
+			serverStatus = true;
+		}
+	}
 </script>
 
 <nav>
 	<h5 class="max">{data.server.server?.name}</h5>
-	<button><i>play_arrow</i></button>
+	<button onclick={togglePowerAction}>
+		<i>
+			{#if serverStatus}
+				close
+			{:else}
+				play_arrow
+			{/if}
+		</i>
+	</button>
 </nav>
 
 <nav style="margin-bottom: 0;" class="tabbed small">

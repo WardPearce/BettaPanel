@@ -48,9 +48,6 @@
 				<input bind:value={serverCommand} type="text" />
 				<label>Command</label>
 			</div>
-			<button type="submit">
-				<i>send</i>
-			</button>
 		</nav>
 	</form>
 </article>
