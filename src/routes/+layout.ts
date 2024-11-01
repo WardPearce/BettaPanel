@@ -8,7 +8,9 @@ export async function load({ url }) {
       goto('/me', { replaceState: true });
     }
   } catch (error) {
-    goto('/', { replaceState: true });
+    if (url.pathname !== '/') {
+      goto('/', { replaceState: true });
+    }
   }
 
   return {

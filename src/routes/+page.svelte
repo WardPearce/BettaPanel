@@ -6,10 +6,16 @@
 
 	let errorMessage: string = '';
 
-	async function login() {
+	async function login(event: SubmitEvent) {
+		event.preventDefault();
+
 		const resp = await fetch(`${import.meta.env.VITE_DEFAULT_PUFFER_PANEL}/auth/login`, {
 			method: 'POST',
-			body: JSON.stringify({ username: username, password: password })
+			body: JSON.stringify({ username: username, password: password }),
+			headers: {
+				'Content-type': 'application/json'
+			},
+			credentials: 'include'
 		});
 		if (resp.ok) {
 			goto('/me');
@@ -32,7 +38,7 @@
 		<h5>Login</h5>
 		<div class="small-space"></div>
 
-		<form on:submit|preventDefault={login}>
+		<form onsubmit={login}>
 			<div class="field label prefix border fill">
 				<i>person</i>
 				<input required min={5} bind:value={username} type="text" />
