@@ -36,17 +36,17 @@ import type { UserSearchResponse } from '../models/UserSearchResponse';
 import type { UserSetting } from '../models/UserSetting';
 import type { UserSettings } from '../models/UserSettings';
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class DefaultService {
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * Get config
      * Gets the editable config entries for the panel
      * @returns EditableConfigSettings OK
      * @throws ApiError
      */
-    public static getApiConfig(): CancelablePromise<EditableConfigSettings> {
-        return __request(OpenAPI, {
+    public getApiConfig(): CancelablePromise<EditableConfigSettings> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/config',
         });
@@ -57,8 +57,8 @@ export class DefaultService {
      * @returns Node Nodes
      * @throws ApiError
      */
-    public static getApiNodes(): CancelablePromise<Array<Node>> {
-        return __request(OpenAPI, {
+    public getApiNodes(): CancelablePromise<Array<Node>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/nodes',
             errors: {
@@ -75,8 +75,8 @@ export class DefaultService {
      * @returns Node Node created
      * @throws ApiError
      */
-    public static postApiNodes(): CancelablePromise<Node> {
-        return __request(OpenAPI, {
+    public postApiNodes(): CancelablePromise<Node> {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/nodes',
             errors: {
@@ -94,10 +94,10 @@ export class DefaultService {
      * @returns Node Nodes
      * @throws ApiError
      */
-    public static getApiNodes1(
+    public getApiNodes1(
         id: string,
     ): CancelablePromise<Node> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/nodes/{id}',
             path: {
@@ -119,11 +119,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiNodes(
+    public putApiNodes(
         id: string,
         node: Node,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/nodes/{id}',
             path: {
@@ -145,10 +145,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiNodes(
+    public deleteApiNodes(
         id: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/nodes/{id}',
             path: {
@@ -169,10 +169,10 @@ export class DefaultService {
      * @returns NodeDeploymentConfig OK
      * @throws ApiError
      */
-    public static getApiNodesDeployment(
+    public getApiNodesDeployment(
         id: string,
     ): CancelablePromise<NodeDeploymentConfig> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/nodes/{id}/deployment',
             path: {
@@ -193,10 +193,10 @@ export class DefaultService {
      * @returns Features OK
      * @throws ApiError
      */
-    public static getApiNodesFeatures(
+    public getApiNodesFeatures(
         id: string,
     ): CancelablePromise<Features> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/nodes/{id}/features',
             path: {
@@ -216,8 +216,8 @@ export class DefaultService {
      * @returns User OK
      * @throws ApiError
      */
-    public static getApiSelf(): CancelablePromise<User> {
-        return __request(OpenAPI, {
+    public getApiSelf(): CancelablePromise<User> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/self',
             errors: {
@@ -235,10 +235,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiSelf(
+    public putApiSelf(
         user: User,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/self',
             body: user,
@@ -256,8 +256,8 @@ export class DefaultService {
      * @returns models_Client OK
      * @throws ApiError
      */
-    public static getApiSelfOauth2(): CancelablePromise<Array<models_Client>> {
-        return __request(OpenAPI, {
+    public getApiSelfOauth2(): CancelablePromise<Array<models_Client>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/self/oauth2',
             errors: {
@@ -274,10 +274,10 @@ export class DefaultService {
      * @returns models_Client OK
      * @throws ApiError
      */
-    public static postApiSelfOauth2(
+    public postApiSelfOauth2(
         client?: models_Client,
     ): CancelablePromise<models_Client> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/self/oauth2',
             body: client,
@@ -295,10 +295,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiSelfOauth2(
+    public deleteApiSelfOauth2(
         id: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/self/oauth2/{id}',
             path: {
@@ -323,14 +323,14 @@ export class DefaultService {
      * @returns ServerSearchResults OK
      * @throws ApiError
      */
-    public static getApiServers(
+    public getApiServers(
         username?: string,
         node?: number,
         name?: string,
         limit?: number,
         page?: number,
     ): CancelablePromise<ServerSearchResults> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers',
             query: {
@@ -349,10 +349,10 @@ export class DefaultService {
      * @returns GetServer OK
      * @throws ApiError
      */
-    public static getApiServers1(
+    public getApiServers1(
         id: string,
     ): CancelablePromise<GetServer> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}',
             path: {
@@ -368,11 +368,11 @@ export class DefaultService {
      * @returns CreatedServerId OK
      * @throws ApiError
      */
-    public static putApiServers(
+    public putApiServers(
         id: string,
         server: CreatedServer,
     ): CancelablePromise<CreatedServerId> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}',
             path: {
@@ -388,10 +388,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiServers(
+    public deleteApiServers(
         id: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/servers/{id}',
             path: {
@@ -408,12 +408,12 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersArchive(
+    public postApiServersArchive(
         id: string,
         files: Array<string>,
         filename: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/archive/{filename}',
             path: {
@@ -431,11 +431,11 @@ export class DefaultService {
      * @returns ServerLogs OK
      * @throws ApiError
      */
-    public static getApiServersConsole(
+    public getApiServersConsole(
         id: string,
         time?: number,
     ): CancelablePromise<ServerLogs> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/console',
             path: {
@@ -454,11 +454,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersConsole(
+    public postApiServersConsole(
         id: string,
         command: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/console',
             path: {
@@ -474,10 +474,10 @@ export class DefaultService {
      * @returns ServerData OK
      * @throws ApiError
      */
-    public static getApiServersData(
+    public getApiServersData(
         id: string,
     ): CancelablePromise<ServerData> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/data',
             path: {
@@ -493,11 +493,11 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static putApiServersData(
+    public putApiServersData(
         id: string,
         server: any,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/data',
             path: {
@@ -514,11 +514,11 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static postApiServersData(
+    public postApiServersData(
         id: string,
         server: any,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/data',
             path: {
@@ -534,10 +534,10 @@ export class DefaultService {
      * @returns ServerDefinition OK
      * @throws ApiError
      */
-    public static getApiServersDefinition(
+    public getApiServersDefinition(
         id: string,
     ): CancelablePromise<ServerDefinition> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/definition',
             path: {
@@ -553,11 +553,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiServersDefinition(
+    public putApiServersDefinition(
         id: string,
         server: NamedServer,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/definition',
             path: {
@@ -574,11 +574,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersDefinition(
+    public postApiServersDefinition(
         id: string,
         server: ServerDefinition,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/definition',
             path: {
@@ -596,12 +596,12 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersExtract(
+    public postApiServersExtract(
         id: string,
         filename: string,
         destination: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/extract/{filename}',
             path: {
@@ -623,11 +623,11 @@ export class DefaultService {
      * @returns any OK
      * @throws ApiError
      */
-    public static getApiServersFile(
+    public getApiServersFile(
         id: string,
         filepath: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/file/{filepath}',
             path: {
@@ -645,12 +645,12 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiServersFile(
+    public putApiServersFile(
         id: string,
         filepath: string,
         file: Blob,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/file/{filepath}',
             path: {
@@ -671,11 +671,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiServersFile(
+    public deleteApiServersFile(
         id: string,
         filepath: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/servers/{id}/file/{filepath}',
             path: {
@@ -691,10 +691,10 @@ export class DefaultService {
      * @returns ServerFlags OK
      * @throws ApiError
      */
-    public static getApiServersFlags(
+    public getApiServersFlags(
         id: string,
     ): CancelablePromise<ServerFlags> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/flags',
             path: {
@@ -710,11 +710,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersFlags(
+    public postApiServersFlags(
         id: string,
         flags: ServerFlags,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/flags',
             path: {
@@ -730,10 +730,10 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static postApiServersInstall(
+    public postApiServersInstall(
         id: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/install',
             path: {
@@ -748,10 +748,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersKill(
+    public postApiServersKill(
         id: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/kill',
             path: {
@@ -767,11 +767,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiServersName(
+    public putApiServersName(
         id: string,
         name: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/name/{name}',
             path: {
@@ -787,10 +787,10 @@ export class DefaultService {
      * @returns any OK
      * @throws ApiError
      */
-    public static getApiServersQuery(
+    public getApiServersQuery(
         id: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/query',
             path: {
@@ -805,10 +805,10 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static headApiServersQuery(
+    public headApiServersQuery(
         id: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'HEAD',
             url: '/api/servers/{id}/query',
             path: {
@@ -823,10 +823,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersReload(
+    public postApiServersReload(
         id: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/reload',
             path: {
@@ -841,10 +841,10 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static postApiServersStart(
+    public postApiServersStart(
         id: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/start',
             path: {
@@ -859,10 +859,10 @@ export class DefaultService {
      * @returns ServerStats OK
      * @throws ApiError
      */
-    public static getApiServersStats(
+    public getApiServersStats(
         id: string,
     ): CancelablePromise<ServerStats> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/stats',
             path: {
@@ -877,10 +877,10 @@ export class DefaultService {
      * @returns ServerRunning OK
      * @throws ApiError
      */
-    public static getApiServersStatus(
+    public getApiServersStatus(
         id: string,
     ): CancelablePromise<ServerRunning> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/status',
             path: {
@@ -895,10 +895,10 @@ export class DefaultService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static postApiServersStop(
+    public postApiServersStop(
         id: string,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/stop',
             path: {
@@ -913,10 +913,10 @@ export class DefaultService {
      * @returns ServerTasks OK
      * @throws ApiError
      */
-    public static getApiServersTasks(
+    public getApiServersTasks(
         id: string,
     ): CancelablePromise<ServerTasks> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/tasks',
             path: {
@@ -932,11 +932,11 @@ export class DefaultService {
      * @returns ServerTask OK
      * @throws ApiError
      */
-    public static getApiServersTasks1(
+    public getApiServersTasks1(
         id: string,
         taskId: string,
     ): CancelablePromise<ServerTask> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/tasks/{taskId}',
             path: {
@@ -954,12 +954,12 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiServersTasks(
+    public putApiServersTasks(
         id: string,
         taskId: string,
         task: Task,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/tasks/{taskId}',
             path: {
@@ -977,11 +977,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiServersTasks(
+    public deleteApiServersTasks(
         id: string,
         taskId: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/servers/{id}/tasks/{taskId}',
             path: {
@@ -998,11 +998,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiServersTasksRun(
+    public postApiServersTasksRun(
         id: string,
         taskId: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/servers/{id}/tasks/{taskId}/run',
             path: {
@@ -1017,10 +1017,10 @@ export class DefaultService {
      * @returns models_UserPermissionsView OK
      * @throws ApiError
      */
-    public static getApiServersUser(
+    public getApiServersUser(
         id: string,
     ): CancelablePromise<Array<models_UserPermissionsView>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/user',
             path: {
@@ -1035,11 +1035,11 @@ export class DefaultService {
      * @returns models_UserPermissionsView OK
      * @throws ApiError
      */
-    public static getApiServersUser1(
+    public getApiServersUser1(
         id: string,
         email: string,
     ): CancelablePromise<Array<models_UserPermissionsView>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/servers/{id}/user/{email}',
             path: {
@@ -1056,12 +1056,12 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiServersUsers(
+    public putApiServersUsers(
         id: string,
         email: string,
         permissions: Permissions,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/servers/{id}/users/{email}',
             path: {
@@ -1078,11 +1078,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiServersUsers(
+    public deleteApiServersUsers(
         id: string,
         email: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/servers/{id}/users/{email}',
             path: {
@@ -1098,10 +1098,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiSettings(
+    public postApiSettings(
         data: ChangeMultipleSettings,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/settings',
             body: data,
@@ -1118,10 +1118,10 @@ export class DefaultService {
      * @returns Setting OK
      * @throws ApiError
      */
-    public static getApiSettings(
+    public getApiSettings(
         key: string,
     ): CancelablePromise<Setting> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/settings/{key}',
             path: {
@@ -1137,11 +1137,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiSettings(
+    public putApiSettings(
         key: string,
         value: Setting,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/settings/{key}',
             path: {
@@ -1160,8 +1160,8 @@ export class DefaultService {
      * @returns TemplateRepo OK
      * @throws ApiError
      */
-    public static getApiTemplates(): CancelablePromise<Array<TemplateRepo>> {
-        return __request(OpenAPI, {
+    public getApiTemplates(): CancelablePromise<Array<TemplateRepo>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/templates',
             errors: {
@@ -1177,10 +1177,10 @@ export class DefaultService {
      * @returns TemplateRepo OK
      * @throws ApiError
      */
-    public static postApiTemplates(
+    public postApiTemplates(
         repo: TemplateRepo,
     ): CancelablePromise<TemplateRepo> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/templates',
             body: repo,
@@ -1197,11 +1197,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiTemplatesLocal(
+    public putApiTemplatesLocal(
         template: ServerDefinition,
         name: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/templates/local/{name}',
             path: {
@@ -1221,10 +1221,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiTemplatesLocal(
+    public deleteApiTemplatesLocal(
         name: string,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/templates/local/{name}',
             path: {
@@ -1243,10 +1243,10 @@ export class DefaultService {
      * @returns Template OK
      * @throws ApiError
      */
-    public static getApiTemplates1(
+    public getApiTemplates1(
         repo: number,
     ): CancelablePromise<Array<Template>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/templates/{repo}',
             path: {
@@ -1265,10 +1265,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiTemplates(
+    public deleteApiTemplates(
         repo: number,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/templates/{repo}',
             path: {
@@ -1288,11 +1288,11 @@ export class DefaultService {
      * @returns Template OK
      * @throws ApiError
      */
-    public static getApiTemplates2(
+    public getApiTemplates2(
         repo: number,
         template: string,
     ): CancelablePromise<Template> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/templates/{repo}/{template}',
             path: {
@@ -1311,10 +1311,10 @@ export class DefaultService {
      * @returns UserSearchResponse OK
      * @throws ApiError
      */
-    public static getApiUsers(
+    public getApiUsers(
         body: UserSearch,
     ): CancelablePromise<UserSearchResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/users',
             body: body,
@@ -1332,10 +1332,10 @@ export class DefaultService {
      * @returns User OK
      * @throws ApiError
      */
-    public static postApiUsers(
+    public postApiUsers(
         body: User,
     ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/users',
             body: body,
@@ -1353,10 +1353,10 @@ export class DefaultService {
      * @returns User OK
      * @throws ApiError
      */
-    public static getApiUsers1(
+    public getApiUsers1(
         id: number,
     ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/users/{id}',
             path: {
@@ -1377,11 +1377,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static postApiUsers1(
+    public postApiUsers1(
         id: number,
         body: User,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/api/users/{id}',
             path: {
@@ -1402,10 +1402,10 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiUsers(
+    public deleteApiUsers(
         id: number,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/users/{id}',
             path: {
@@ -1425,10 +1425,10 @@ export class DefaultService {
      * @returns Permissions OK
      * @throws ApiError
      */
-    public static getApiUsersPerms(
+    public getApiUsersPerms(
         id: number,
     ): CancelablePromise<Permissions> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/users/{id}/perms',
             path: {
@@ -1449,11 +1449,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiUsersPerms(
+    public putApiUsersPerms(
         id: number,
         body: Permissions,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/users/{id}/perms',
             path: {
@@ -1474,8 +1474,8 @@ export class DefaultService {
      * @returns UserSettings OK
      * @throws ApiError
      */
-    public static getApiUsersettings(): CancelablePromise<Array<UserSettings>> {
-        return __request(OpenAPI, {
+    public getApiUsersettings(): CancelablePromise<Array<UserSettings>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/api/usersettings',
             errors: {
@@ -1491,11 +1491,11 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static putApiUsersettings(
+    public putApiUsersettings(
         key: string,
         value: UserSetting,
     ): CancelablePromise<void> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PUT',
             url: '/api/usersettings/{key}',
             path: {
@@ -1514,8 +1514,8 @@ export class DefaultService {
      * @returns DaemonRunning OK
      * @throws ApiError
      */
-    public static getDaemon(): CancelablePromise<DaemonRunning> {
-        return __request(OpenAPI, {
+    public getDaemon(): CancelablePromise<DaemonRunning> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/daemon',
         });
@@ -1526,8 +1526,8 @@ export class DefaultService {
      * @returns void
      * @throws ApiError
      */
-    public static headDaemon(): CancelablePromise<void> {
-        return __request(OpenAPI, {
+    public headDaemon(): CancelablePromise<void> {
+        return this.httpRequest.request({
             method: 'HEAD',
             url: '/daemon',
         });
@@ -1538,8 +1538,8 @@ export class DefaultService {
      * @returns Features OK
      * @throws ApiError
      */
-    public static getDaemonFeatures(): CancelablePromise<Features> {
-        return __request(OpenAPI, {
+    public getDaemonFeatures(): CancelablePromise<Features> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/daemon/features',
         });
@@ -1551,10 +1551,10 @@ export class DefaultService {
      * @returns OAuth2TokenResponse OK
      * @throws ApiError
      */
-    public static postOauth2Token(
+    public postOauth2Token(
         request: OAuth2TokenRequest,
     ): CancelablePromise<OAuth2TokenResponse> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/oauth2/token',
             body: request,

@@ -1,0 +1,8 @@
+@font-face {
+    font-family: sonsie;
+    src: url('./SonsieOne-Regular.ttf');
+}
+
+body {
+    height: 100%;
+}
