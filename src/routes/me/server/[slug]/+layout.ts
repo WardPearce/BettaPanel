@@ -9,6 +9,7 @@ export async function load({ params }) {
     websocket: new WebSocket(
       `${pufferUrl.protocol === 'http:' ? 'ws' : 'wss'}://${pufferUrl.host}/api/servers/${params.slug}/socket`
     ),
-    status: await puffer.default.getApiServersStatus(params.slug)
+    status: await puffer.default.getApiServersStatus(params.slug),
+    stats: await puffer.default.getApiServersStats(params.slug)
   };
 }

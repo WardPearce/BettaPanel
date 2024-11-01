@@ -34,6 +34,7 @@
 	"dependencies": {
 		"beercss": "^3.7.10",
 		"chart.js": "^4.4.6",
-		"material-dynamic-colors": "^1.1.2"
+		"material-dynamic-colors": "^1.1.2",
+		"pretty-bytes": "^6.1.1"
 	}
 }
