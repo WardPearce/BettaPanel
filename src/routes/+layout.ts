@@ -1,9 +1,11 @@
 import { goto } from "$app/navigation";
+import type { User } from "$lib/api/index.js";
 import { puffer } from "$lib/const";
 
 export async function load({ url }) {
+  let self: User | undefined;
   try {
-    await puffer.default.getApiSelf();
+    self = await puffer.default.getApiSelf();
     if (url.pathname === '/') {
       goto('/me', { replaceState: true });
     }
@@ -14,7 +16,8 @@ export async function load({ url }) {
   }
 
   return {
-    editableConfig: await puffer.default.getApiConfig()
+    editableConfig: await puffer.default.getApiConfig(),
+    self: self
   };
 }
 
