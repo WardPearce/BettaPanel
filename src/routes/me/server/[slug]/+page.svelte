@@ -1,17 +1,24 @@
 <script lang="ts">
 	import type { ServerStats } from '$lib/api';
+	import { consoleLogs } from '$lib/console';
 	import { puffer } from '$lib/const';
+	import { panelNameStore } from '$lib/store';
 	import prettyBytes from 'pretty-bytes';
 	import { onMount, tick } from 'svelte';
+	import { get } from 'svelte/store';
 
 	let { data }: { data: { serverId: string; websocket: WebSocket; stats: ServerStats } } = $props();
 
 	let serverCommand: string = $state('');
 	let cpuUsage = $state(data.stats.cpu);
 	let memoryUsage = $state(data.stats.memory);
-	let serverLogs: string = $state('');
+	let serverLogs: string[] = $state([]);
 	onMount(async () => {
-		serverLogs = atob(`${(await puffer.default.getApiServersConsole(data.serverId, 0)).logs}`);
+		const panelName = get(panelNameStore);
+		const console = await puffer.default.getApiServersConsole(data.serverId, 0);
+		if (console.logs) {
+			serverLogs = consoleLogs(console.logs as unknown as string, panelName);
+		}
 		scrollIntoView();
 
 		data.websocket.addEventListener('message', (event: MessageEvent) => {
@@ -22,7 +29,7 @@
 
 			if (message) {
 				if (message.type === 'console') {
-					serverLogs += atob(message.data.logs);
+					serverLogs = [...serverLogs, ...consoleLogs(message.data.logs, panelName)];
 					scrollIntoView();
 				} else if (message.type === 'stat') {
 					cpuUsage = message.data.cpu;
@@ -71,8 +78,12 @@
 </div>
 
 <article>
-	<article id="console" class="surface-dim large" style="overflow: scroll;white-space: pre-line;">
-		{serverLogs}
+	<article id="console" class="surface-dim large" style="overflow: scroll;">
+		<ul style="list-style: none;padding: 0;">
+			{#each serverLogs as log}
+				<li>{@html log}</li>
+			{/each}
+		</ul>
 	</article>
 	<form onsubmit={sendCommand}>
 		<nav>

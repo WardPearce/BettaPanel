@@ -68,3 +68,5 @@
 		</button>
 	{/if}
 </a>
+
+<div class="small-space"></div>

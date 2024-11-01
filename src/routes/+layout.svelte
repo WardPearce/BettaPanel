@@ -3,6 +3,7 @@
 	import type { User } from '$lib/api';
 	import type { EditableConfigSettings } from '$lib/api/models/EditableConfigSettings';
 	import { generateGradient, stringToSha256 } from '$lib/misc';
+	import { panelNameStore } from '$lib/store';
 	import 'beercss';
 	import 'material-dynamic-colors';
 	import { onMount } from 'svelte';
@@ -22,6 +23,13 @@
 				await ui('theme', settings.color);
 				const navBar = document.getElementById('header');
 				if (navBar) navBar.style.background = generateGradient(settings.color, false);
+
+				if (
+					data.editableConfig.branding?.name &&
+					data.editableConfig.branding?.name !== 'PufferPanel'
+				) {
+					panelNameStore.set(data.editableConfig.branding.name);
+				}
 			} catch {}
 		}
 
@@ -35,13 +43,11 @@
 	<div style="display: flex; align-items: center;">
 		<div style="flex: 1; text-align: center;">
 			<a href={$page.url.pathname === '/' ? '/' : '/me'}>
-				<h5>
+				<h1>
 					<b>
-						{data.editableConfig.branding?.name === 'PufferPanel'
-							? 'BettaPanel'
-							: data.editableConfig.branding?.name}
+						{$panelNameStore}
 					</b>
-				</h5>
+				</h1>
 			</a>
 		</div>
 		{#if emailHash}
@@ -62,8 +68,8 @@
 </main>
 
 <style>
-	h5 {
-		font-family: sonsie;
+	h1 {
+		font-family: monospace;
 		color: var(--primary-inverse);
 		margin: 0;
 		flex-grow: 1;
