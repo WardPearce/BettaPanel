@@ -1,5 +1,6 @@
+
 export async function load({ params }) {
   return {
-    serverId: params.slug
+    serverId: params.slug,
   };
 }

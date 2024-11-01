@@ -1,20 +1,16 @@
 <script lang="ts">
-	import Console from '$lib/components/server/Console.svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { puffer } from '$lib/const';
+	import { onMount, tick } from 'svelte';
 
-	let { data }: { data: { serverId: string } } = $props();
+	let { data }: { data: { serverId: string; websocket: WebSocket } } = $props();
 
-	let consoleFunc: Function;
-
-	let websocket: WebSocket;
+	let serverCommand: string = $state('');
+	let serverLogs: string = $state('');
 	onMount(async () => {
-		const pufferUrl = new URL(import.meta.env.VITE_DEFAULT_PUFFER_PANEL);
+		serverLogs = atob(`${(await puffer.default.getApiServersConsole(data.serverId, 0)).logs}`);
+		scrollIntoView();
 
-		websocket = new WebSocket(
-			`${pufferUrl.protocol === 'http:' ? 'ws' : 'wss'}://${pufferUrl.host}/api/servers/${data.serverId}/socket`
-		);
-
-		websocket.onmessage = (event: MessageEvent) => {
+		data.websocket.addEventListener('message', (event: MessageEvent) => {
 			let message: Record<string, any> | undefined = undefined;
 			try {
 				message = JSON.parse(event.data);
@@ -22,54 +18,39 @@
 
 			if (message) {
 				if (message.type === 'console') {
-					consoleFunc(message.data);
+					serverLogs += atob(message.data.logs);
+					scrollIntoView();
 				}
 			}
-		};
+		});
 	});
 
-	onDestroy(() => {
-		websocket.close();
-	});
+	async function scrollIntoView() {
+		await tick();
+		const consoleElement = document.getElementById('console');
+		if (consoleElement) consoleElement.scrollTop = consoleElement.scrollHeight;
+	}
 
-	function handleWebhookReady(event: { detail: Function }) {
-		consoleFunc = event.detail;
+	async function sendCommand(event: SubmitEvent) {
+		event.preventDefault();
+		await puffer.default.postApiServersConsole(data.serverId, serverCommand);
+		serverCommand = '';
 	}
 </script>
 
-<div>
-	<nav class="tabbed small">
-		<a class="active">
-			<i>terminal</i>
-			<span>Console</span>
-		</a>
-		<a>
-			<i>analytics</i>
-			<span>Analytics</span>
-		</a>
-		<a>
-			<i>home_storage</i>
-			<span>Files</span>
-		</a>
-		<a>
-			<i>settings</i>
-			<span>Settings</span>
-		</a>
-		<a>
-			<i>group</i>
-			<span>Users</span>
-		</a>
-		<a>
-			<i>sync</i>
-			<span>SFTP</span>
-		</a>
-		<a>
-			<i>admin_panel_settings</i>
-			<span>Admin</span>
-		</a>
-	</nav>
-</div>
-
-<div class="small-space"></div>
-
-<Console serverId={data.serverId} on:websocket={handleWebhookReady} />
+<article>
+	<article id="console" class="surface-dim large" style="overflow: scroll;white-space: pre-line;">
+		{serverLogs}
+	</article>
+	<form onsubmit={sendCommand}>
+		<nav>
+			<div class="field label border max">
+				<input bind:value={serverCommand} type="text" />
+				<label>Command</label>
+			</div>
+			<button type="submit">
+				<i>send</i>
+			</button>
+		</nav>
+	</form>
+</article>
