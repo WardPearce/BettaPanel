@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { EditableConfigSettings } from '$lib/api/models/EditableConfigSettings';
 	import 'beercss';
 	import 'material-dynamic-colors';
@@ -50,13 +51,15 @@
 </script>
 
 <nav id="root-navbar" class="top surface">
-	<h5>
-		<b
-			>{data.editableConfig.branding?.name === 'PufferPanel'
-				? 'BettaPanel'
-				: data.editableConfig.branding?.name}</b
-		>
-	</h5>
+	<a href={$page.url.pathname === '/' ? '/' : '/me'}>
+		<h5>
+			<b
+				>{data.editableConfig.branding?.name === 'PufferPanel'
+					? 'BettaPanel'
+					: data.editableConfig.branding?.name}</b
+			>
+		</h5>
+	</a>
 </nav>
 
 <main class="responsive">
