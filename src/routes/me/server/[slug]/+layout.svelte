@@ -14,9 +14,9 @@
 		<i>terminal</i>
 		<span>Console</span>
 	</a>
-	<a>
+	<a href={`/me/server/${data.server.server?.id}/stats`}>
 		<i>analytics</i>
-		<span>Analytics</span>
+		<span>Statistics</span>
 	</a>
 	<a>
 		<i>home_storage</i>
