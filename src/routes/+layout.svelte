@@ -69,10 +69,10 @@
 
 <style>
 	h1 {
-		font-family: monospace;
 		color: var(--primary-inverse);
 		margin: 0;
 		flex-grow: 1;
+		font-size: 3em;
 		text-align: center;
 	}
 </style>
