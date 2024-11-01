@@ -35,17 +35,16 @@
 			<article class="error">{errorMessage}</article>
 		{/if}
 
-		<h5>Login</h5>
 		<div class="small-space"></div>
 
 		<form onsubmit={login}>
-			<div class="field label prefix border fill">
+			<div class="field label prefix border">
 				<i>person</i>
 				<input required min={5} bind:value={username} type="text" />
 				<label>Username</label>
 			</div>
 
-			<div class="field label prefix border fill">
+			<div class="field label prefix border">
 				<i>password</i>
 				<input required bind:value={password} type="password" />
 				<label>Password</label>

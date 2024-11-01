@@ -72,6 +72,6 @@
 <style>
 	nav h5 {
 		font-family: sonsie;
-		color: var(--primary);
+		color: var(--primary-inverse);
 	}
 </style>
